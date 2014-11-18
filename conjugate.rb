@@ -1,4 +1,8 @@
 # accented chars for copying: é ú á í ñ
+#
+# BUGS:
+# ustedes / preparar
+
 require 'bundler/setup' 
 require 'highline/import'
 
@@ -57,8 +61,21 @@ def regular_ar_verbs
     ["desear", "to desire"],
     ["mandar", "to order"],
     ["visitar", "to visit"],
+    ["entrar", "to enter"],
     ["enseñar", "to teach"],
-    ["mirar", "to watch, to look at"]
+    ["mirar", "to watch, to look at"],
+    ["limpiar", "to clean"],
+    ["quedar", "to stay, to remain"],
+    ["doblar", "to fold"],
+    ["encantar", "to love, to bewitch"],
+    ["pasar", "to pass"],
+    ["reparar", "to repair, to fix"],
+    ["desayunar", "to have breakfast"],
+    ["almorzar", "to have lunch"],
+    ["descansar", "to rest"],
+    ["gustar", "to like"],
+    ["regalar", "to give"],
+    ["cuidar", "to take care of, to look after"]
   ]
 end
 
@@ -77,6 +94,7 @@ def regular_er_verbs
     ["leer", "to read"],
     ["temer", "to fear"],
     ["correr", "to run"],
+    ["prender", "to turn on"],
     ["meter", "to put (into); meter (en)"],
     ["vender", "to sell"]
   ]
@@ -91,7 +109,7 @@ def regular_ir_verbs
     ["admitir", "to admit"],
     ["discutir", "to discuss"],
     ["recibir", "to receive"],
-    ["asistir a", "to attend"],
+    ["asistir", "to attend; asistir (a)"],
     ["escribir", "to write"],
     ["subir", "to climb, to go up"],
     ["cubrir", "to cover"],
@@ -108,7 +126,7 @@ end
 
 def conjugate_regular_verb(pronoun, verb)
   verb_ending = /ar\z|er\z|ir\z/.match(verb)[0]
-  root = verb.gsub(verb_ending, '')
+  root = verb.gsub(/#{verb_ending}\z/, '')
   case verb_ending
   when 'ar' then conjugate_regular_ar_verb(pronoun, root)
   when 'er' then conjugate_regular_er_verb(pronoun, root)
