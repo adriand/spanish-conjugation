@@ -1,24 +1,10 @@
 # accented chars for copying: é ú á í ñ
 #
-# BUGS:
-# ustedes / preparar
+# Resources:
+# http://www.spanishdict.com/answers/245763/glue-of-the-language-19-most-commonly-used-irregular-verbs-for-beginners-
 
 require 'bundler/setup' 
 require 'highline/import'
-
-def pronouns
-  [
-    'yo',
-    'tú',
-    'él',
-    'ella',
-    'nosotros',
-    'ellos',
-    'ellas',
-    'usted',
-    'ustedes'
-  ]
-end
 
 def regular_ar_verbs
   [
@@ -134,35 +120,24 @@ def conjugate_regular_verb(pronoun, verb)
   end
 end
 
-# these could be DRYed out rather easily
+def pronouns
+  %W[yo tú él ella nosotros ellos ellas usted ustedes]
+end
+
 def conjugate_regular_ar_verb(pronoun, root_of_verb)
-  case pronoun
-  when 'yo' then "#{root_of_verb}o"
-  when 'tú' then "#{root_of_verb}as"
-  when /él\z|ella\z|usted\z/ then "#{root_of_verb}a"
-  when 'nosotros' then "#{root_of_verb}amos"
-  when /ellos|ellas|ustedes/ then "#{root_of_verb}an"
-  end
+  root_of_verb + %W[o as a amos an][pronoun_index(pronoun)]
 end
 
 def conjugate_regular_er_verb(pronoun, root_of_verb)
-  case pronoun
-  when 'yo' then "#{root_of_verb}o"
-  when 'tú' then "#{root_of_verb}es"
-  when /él\z|ella\z|usted\z/ then "#{root_of_verb}e"
-  when 'nosotros' then "#{root_of_verb}emos"
-  when /ellos|ellas|ustedes/ then "#{root_of_verb}en"
-  end
+  root_of_verb + %W[o es e emos en][pronoun_index(pronoun)]
 end
 
 def conjugate_regular_ir_verb(pronoun, root_of_verb)
-  case pronoun
-  when 'yo' then "#{root_of_verb}o"
-  when 'tú' then "#{root_of_verb}es"
-  when /él\z|ella\z|usted\z/ then "#{root_of_verb}e"
-  when 'nosotros' then "#{root_of_verb}imos"
-  when /ellos|ellas|ustedes/ then "#{root_of_verb}en"
-  end
+  root_of_verb + %W[o es e imos en][pronoun_index(pronoun)]
+end
+
+def pronoun_index(pronoun)
+  [/yo/,/tú/,/él\z|ella\z|usted\z/,/nosotros/,/ellos|ellas|ustedes/].index { |p| p =~ pronoun }
 end
 
 while true
