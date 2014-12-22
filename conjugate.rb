@@ -57,7 +57,6 @@ def regular_ar_verbs
     ["pasar", "to pass"],
     ["reparar", "to repair, to fix"],
     ["desayunar", "to have breakfast"],
-    ["almorzar", "to have lunch"],
     ["descansar", "to rest"],
     ["gustar", "to like"],
     ["regalar", "to give"],
@@ -107,6 +106,19 @@ def regular_ir_verbs
     ["describir", "to describe"],
     ["partir", "to divide"],
     ["vivir", "to live"]
+  ]
+end
+
+# irregular ar verbs that when conjugated change their first vowel to ue
+def irregular_ar_verbs_to_ue
+  [
+    ["jugar","to play"],
+    ["contar", "to count (money), to tell (a story)"],
+    ["encontrar", "to find, to meet"],
+    ["almorzar", "to have lunch"],
+    ["soñar", "to dream"],
+    ["probar", "to taste, to test"],
+    ["recordar", "to remember"]
   ]
 end
 
