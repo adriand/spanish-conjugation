@@ -109,19 +109,6 @@ def regular_ir_verbs
   ]
 end
 
-# irregular ar verbs that when conjugated change their first vowel to ue
-def irregular_ar_verbs_to_ue
-  [
-    ["jugar","to play"],
-    ["contar", "to count (money), to tell (a story)"],
-    ["encontrar", "to find, to meet"],
-    ["almorzar", "to have lunch"],
-    ["soñar", "to dream"],
-    ["probar", "to taste, to test"],
-    ["recordar", "to remember"]
-  ]
-end
-
 def conjugate_regular_verb(pronoun, verb)
   verb_ending = /ar\z|er\z|ir\z/.match(verb)[0]
   root = verb.gsub(/#{verb_ending}\z/, '')
