@@ -109,29 +109,34 @@ def regular_ir_verbs
   ]
 end
 
-def conjugate_regular_verb(pronoun, verb)
-  verb_ending = /ar\z|er\z|ir\z/.match(verb)[0]
-  root = verb.gsub(/#{verb_ending}\z/, '')
-  case verb_ending
-  when 'ar' then conjugate_regular_ar_verb(pronoun, root)
-  when 'er' then conjugate_regular_er_verb(pronoun, root)
-  when 'ir' then conjugate_regular_ir_verb(pronoun, root)
-  end
-end
-
 def pronouns
   %W[yo tú él ella nosotros ellos ellas usted ustedes]
 end
 
-def conjugate_regular_ar_verb(pronoun, root_of_verb)
+def get_verb_ending_and_root(verb)
+  verb_ending = /ar\z|er\z|ir\z/.match(verb)[0]
+  root = verb.gsub(/#{verb_ending}\z/, '')
+  return verb_ending, root
+end
+
+def conjugate_in_the_present_indicative(pronoun, verb)
+  verb_ending, root = get_verb_ending_and_root(verb)
+  case verb_ending
+  when 'ar' then conjugate_ar_in_the_present_indicative(pronoun, root)
+  when 'er' then conjugate_er_in_the_present_indicative(pronoun, root)
+  when 'ir' then conjugate_ir_in_the_present_indicative(pronoun, root)
+  end
+end
+
+def conjugate_ar_in_the_present_indicative(pronoun, root_of_verb)
   root_of_verb + %W[o as a amos an][pronoun_index(pronoun)]
 end
 
-def conjugate_regular_er_verb(pronoun, root_of_verb)
+def conjugate_er_in_the_present_indicative(pronoun, root_of_verb)
   root_of_verb + %W[o es e emos en][pronoun_index(pronoun)]
 end
 
-def conjugate_regular_ir_verb(pronoun, root_of_verb)
+def conjugate_ir_in_the_present_indicative(pronoun, root_of_verb)
   root_of_verb + %W[o es e imos en][pronoun_index(pronoun)]
 end
 
@@ -145,6 +150,6 @@ while true
 
   puts "#{pronoun} / #{pair[0]}"
   ask("> ") { |q| q.echo = false }
-  puts "> " + conjugate_regular_verb(pronoun, pair[0])
+  puts "> " + conjugate_in_the_present_indicative(pronoun, pair[0])
   puts "> #{pair[1]}\n\n"
 end
