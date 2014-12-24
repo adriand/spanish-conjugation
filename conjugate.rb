@@ -1,4 +1,4 @@
-# accented chars for copying: é ú á í ñ
+# accented chars for copying: é ú á í ñ ó
 #
 # Resources:
 # http://www.spanishdict.com/answers/245763/glue-of-the-language-19-most-commonly-used-irregular-verbs-for-beginners-
@@ -12,18 +12,13 @@ def regular_ar_verbs
     ["entrar", "to enter (into); entrar (en)"],
     ["necesitar", "to need"],
     ["amar", "to love"],
-    ["enviar", "to send"],
     ["olvidar", "to forget"],
-    ["andar", "to walk"],
     ["escuchar", "to listen to"],
-    ["pagar", "to pay for"],
     ["ayudar", "to help"],
     ["esperar", "to hope, to wait for, to expect"],
-    ["practicar", "to practice"],
     ["bailar", "to dance"],
     ["estudiar", "to study"],
     ["preguntar", "to ask"],
-    ["buscar", "to look for"],
     ["firmar", "to sign"],
     ["preparar", "to prepare"],
     ["caminar", "to walk"],
@@ -34,15 +29,13 @@ def regular_ar_verbs
     ["saludar", "to greet"],
     ["cocinar", "to cook"],
     ["hablar", "to speak, to talk"],
-    ["tocar", "to touch, to play an instrument"],
     ["comprar", "to buy"],
     ["lavar", "to wash"],
     ["tomar", "to take, to drink"],
     ["contestar", "to answer"],
-    ["llegar", "to arrive"],
     ["trabajar", "to work"],
     ["dejar", "to allow, to leave"],
-    ["llevar", "to wear, to carry"],
+    ["llevar", "to wear, to carry, to take"],
     ["viajar", "to travel"],
     ["desear", "to desire"],
     ["mandar", "to order"],
@@ -68,15 +61,12 @@ def regular_er_verbs
   [
     ["romper", "to break"],
     ["aprender", "to learn"],
-    ["creer", "to believe"],
-    ["poseer", "to possess, to own"],
     ["beber", "to drink"],
     ["deber", "to have to, to owe"],
     ["prometer", "to promise"],
     ["comer", "to eat"],
     ["esconder", "to hide"],
     ["comprender", "to understand"],
-    ["leer", "to read"],
     ["temer", "to fear"],
     ["correr", "to run"],
     ["prender", "to turn on"],
@@ -113,6 +103,10 @@ def pronouns
   %W[yo tú él ella nosotros ellos ellas usted ustedes]
 end
 
+def pronoun_index(pronoun)
+  [/yo/,/tú/,/él\z|ella\z|usted\z/,/nosotros/,/ellos|ellas|ustedes/].index { |p| p =~ pronoun }
+end
+
 def get_verb_ending_and_root(verb)
   verb_ending = /ar\z|er\z|ir\z/.match(verb)[0]
   root = verb.gsub(/#{verb_ending}\z/, '')
@@ -140,8 +134,21 @@ def conjugate_ir_in_the_present_indicative(pronoun, root_of_verb)
   root_of_verb + %W[o es e imos en][pronoun_index(pronoun)]
 end
 
-def pronoun_index(pronoun)
-  [/yo/,/tú/,/él\z|ella\z|usted\z/,/nosotros/,/ellos|ellas|ustedes/].index { |p| p =~ pronoun }
+def conjugate_in_the_preterite(pronoun, verb)
+  verb_ending, root = get_verb_ending_and_root(verb)
+  if verb_ending == 'ar'
+    conjugate_ar_in_the_preterite(pronoun, root)
+  else # er and ir are the same
+    conjugate_er_ir_in_the_preterite(pronoun, root)
+  end
+end
+
+def conjugate_ar_in_the_preterite(pronoun, root_of_verb)
+  root_of_verb + %W[é aste ó amos aron][pronoun_index(pronoun)]
+end
+
+def conjugate_er_ir_in_the_preterite(pronoun, root_of_verb)
+  root_of_verb + %W[í iste ió imos ieron][pronoun_index(pronoun)]
 end
 
 while true
@@ -151,5 +158,6 @@ while true
   puts "#{pronoun} / #{pair[0]}"
   ask("> ") { |q| q.echo = false }
   puts "> " + conjugate_in_the_present_indicative(pronoun, pair[0])
+  # puts "> " + conjugate_in_the_preterite(pronoun, pair[0])
   puts "> #{pair[1]}\n\n"
 end
