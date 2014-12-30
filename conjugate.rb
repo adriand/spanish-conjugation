@@ -151,13 +151,44 @@ def conjugate_er_ir_in_the_preterite(pronoun, root_of_verb)
   root_of_verb + %W[í iste ió imos ieron][pronoun_index(pronoun)]
 end
 
-while true
+def conjugate_in_the_imperfect(pronoun, verb)
+  verb_ending, root = get_verb_ending_and_root(verb)
+  if verb_ending == 'ar'
+    conjugate_ar_in_the_imperfect(pronoun, root)
+  else # er and ir are the same
+    conjugate_er_ir_in_the_imperfect(pronoun, root)
+  end
+end
+
+def conjugate_ar_in_the_imperfect(pronoun, root_of_verb)
+  root_of_verb + %W[aba abas aba ábamos aban][pronoun_index(pronoun)]
+end
+
+def conjugate_er_ir_in_the_imperfect(pronoun, root_of_verb)
+  root_of_verb + %W[ía ías ía íamos ían][pronoun_index(pronoun)]
+end
+
+method = nil
+choose do |menu|
+  menu.prompt = "Choose tense or quit."
+
+  menu.choice(:present) { method = :conjugate_in_the_present_indicative }
+  menu.choice(:preterite) { method = :conjugate_in_the_preterite }
+  menu.choice(:imperfect) { method = :conjugate_in_the_imperfect }
+  menu.choice(:quit) { exit }
+end
+
+
+puts "\nEnter q to quit or enter to proceed to next item\n\n"
+
+do_not_quit = true
+while do_not_quit
   pair = [regular_ar_verbs.sample, regular_er_verbs.sample, regular_ir_verbs.sample].sample
   pronoun = pronouns.sample
 
   puts "#{pronoun} / #{pair[0]}"
-  ask("> ") { |q| q.echo = false }
-  puts "> " + conjugate_in_the_present_indicative(pronoun, pair[0])
-  # puts "> " + conjugate_in_the_preterite(pronoun, pair[0])
+  entry = ask("> ")
+  do_not_quit = entry != "q"
+  puts "\n> " + send(method, pronoun, pair[0])
   puts "> #{pair[1]}\n\n"
 end
